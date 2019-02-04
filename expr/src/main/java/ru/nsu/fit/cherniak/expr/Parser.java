@@ -49,7 +49,12 @@ public class Parser {
     }
 
     public long parsePower() throws IllegalLexemeException, IOException, IllegalCharacterException {
-        return parseAtom();
+        if(cur.type == LexemeType.MINUS){
+            cur = lexer.nextLexeme();
+            return -parseAtom();
+        } else {
+            return parseAtom();
+        }
     }
 
     public long parseAtom() throws IllegalLexemeException, IOException, IllegalCharacterException {

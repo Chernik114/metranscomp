@@ -45,4 +45,10 @@ public class ParserTest {
     public void parseFlat() throws IOException, IllegalCharacterException, IllegalLexemeException {
         assert newParser("2 ^ 3 ^ 2").parseFlat() == 512;
     }
+
+    @Test
+    public void parsePower() throws IOException, IllegalCharacterException, IllegalLexemeException {
+        assert newParser("-67").parsePower() == -67;
+        assert newParser("983").parsePower() == 983;
+    }
 }
