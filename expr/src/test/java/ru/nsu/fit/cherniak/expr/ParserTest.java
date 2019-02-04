@@ -51,4 +51,17 @@ public class ParserTest {
         assert newParser("-67").parsePower() == -67;
         assert newParser("983").parsePower() == 983;
     }
+
+    @Test
+    public void parseAtom() throws IOException, IllegalCharacterException, IllegalLexemeException {
+        assert newParser("78").parseAtom() == 78;
+        assert newParser("(84)").parseAtom() == 84;
+        assert newParser("(2+3)").parseAtom() == 5;
+        try {
+            newParser("(4+8").parseAtom();
+            assert false;
+        } catch (IllegalLexemeException e){
+            assert true;
+        }
+    }
 }

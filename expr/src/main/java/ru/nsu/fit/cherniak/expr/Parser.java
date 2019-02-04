@@ -64,9 +64,20 @@ public class Parser {
                 temp = Long.parseLong(cur.value);
                 cur = lexer.nextLexeme();
                 break;
+            case OPEN:
+                cur = lexer.nextLexeme();
+                temp = parseExpr();
+                if(cur.type != LexemeType.CLOSE){
+                    throw new IllegalLexemeException("Unclosed ()", cur);
+                }
+                break;
             default:
                 throw new IllegalLexemeException("Unexpected", cur);
         }
         return temp;
+    }
+
+    public long calculate() throws IllegalLexemeException, IOException, IllegalCharacterException {
+        long temp = parseExpr();
     }
 }
