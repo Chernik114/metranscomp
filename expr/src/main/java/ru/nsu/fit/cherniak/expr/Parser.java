@@ -1,10 +1,44 @@
 package ru.nsu.fit.cherniak.expr;
 
+import java.io.IOException;
+
 public class Parser {
     private Lexer lexer;
     private Lexeme cur;
 
-    public Parser(Lexer lexer){
+    public Parser(Lexer lexer) throws IOException, IllegalCharacterException {
         this.lexer = lexer;
+        this.cur = lexer.nextLexeme();
+    }
+
+    public long parseExpr() throws IOException, IllegalCharacterException, IllegalLexemeException {
+        long temp = parseTerm();
+        while (cur.type == LexemeType.PLUS || cur.type == LexemeType.MINUS) {
+            LexemeType type = cur.type;
+            cur = lexer.nextLexeme();
+            if (type == LexemeType.PLUS) {
+                temp += parseTerm();
+            } else {
+                temp -= parseTerm();
+            }
+        }
+        return temp;
+    }
+
+    public long parseTerm() throws IllegalLexemeException, IOException, IllegalCharacterException {
+        return parseAtom();
+    }
+
+    public long parseAtom() throws IllegalLexemeException, IOException, IllegalCharacterException {
+        long temp;
+        switch (cur.type) {
+            case NUMBER:
+                temp = Long.parseLong(cur.value);
+                cur = lexer.nextLexeme();
+                break;
+            default:
+                throw new IllegalLexemeException("Unexpected", cur);
+        }
+        return temp;
     }
 }
