@@ -64,4 +64,16 @@ public class ParserTest {
             assert true;
         }
     }
+
+    @Test
+    public void calculate() throws IOException, IllegalCharacterException, IllegalLexemeException {
+        assert newParser("1 + 2*3 - 4/2 + (6-2^2)^(2-1) - 4*2 - -1").calculate() == 0;
+        try {
+            newParser("(5+6))").calculate();
+            assert false;
+        } catch (IllegalLexemeException e){
+            assert true;
+        }
+
+    }
 }

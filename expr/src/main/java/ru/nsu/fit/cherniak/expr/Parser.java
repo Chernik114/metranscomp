@@ -70,6 +70,7 @@ public class Parser {
                 if(cur.type != LexemeType.CLOSE){
                     throw new IllegalLexemeException("Unclosed ()", cur);
                 }
+                cur = lexer.nextLexeme();
                 break;
             default:
                 throw new IllegalLexemeException("Unexpected", cur);
@@ -79,5 +80,9 @@ public class Parser {
 
     public long calculate() throws IllegalLexemeException, IOException, IllegalCharacterException {
         long temp = parseExpr();
+        if(cur.type != LexemeType.EOF){
+            throw new IllegalLexemeException("Unclosed", cur);
+        }
+        return temp;
     }
 }
