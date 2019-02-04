@@ -25,7 +25,30 @@ public class Parser {
         return temp;
     }
 
-    public long parseTerm() throws IllegalLexemeException, IOException, IllegalCharacterException {
+    public long parseTerm() throws IOException, IllegalCharacterException, IllegalLexemeException {
+        long temp = parseFlat();
+        while (cur.type == LexemeType.MULT || cur.type == LexemeType.DIV) {
+            LexemeType type = cur.type;
+            cur = lexer.nextLexeme();
+            if (type == LexemeType.MULT) {
+                temp *= parseFlat();
+            } else {
+                temp /= parseFlat();
+            }
+        }
+        return temp;
+    }
+
+    public long parseFlat() throws IllegalLexemeException, IOException, IllegalCharacterException {
+        long temp = parsePower();
+        if(cur.type == LexemeType.POW){
+            cur = lexer.nextLexeme();
+            temp = (long) Math.pow(temp, parseFlat());
+        }
+        return temp;
+    }
+
+    public long parsePower() throws IllegalLexemeException, IOException, IllegalCharacterException {
         return parseAtom();
     }
 
