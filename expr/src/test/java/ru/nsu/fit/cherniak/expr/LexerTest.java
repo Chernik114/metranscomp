@@ -24,4 +24,7 @@ public class LexerTest {
         assert lexer.nextLexeme().equals(new Lexeme(LexemeType.EOF, ""));
     }
 
+    @Test
+    public void nextLexeme1() {
+    }
 }
